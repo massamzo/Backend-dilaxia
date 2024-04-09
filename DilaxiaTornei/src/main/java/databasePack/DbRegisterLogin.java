@@ -1,4 +1,4 @@
-package register;
+package databasePack;
 import java.sql.Connection;
 import java.sql.SQLException;
 import java.sql.Statement; 
@@ -90,6 +90,27 @@ public class DbRegisterLogin extends Database {
 		}
 	 }
 	// TODO Auto-generated constructor stub
+	 
+	 
+	 public boolean verifyUser(User utente) throws SQLException {
+		 
+		 if(utente.userExists()) {
+			 
+			 User cryptedUser = utente.userWithCryptedPass();
+			 Argon2 argon2 = Argon2Factory.create();
+			 
+			 if(argon2.verify(cryptedUser.getPassword(), utente.getPassword())) {
+				 	
+				 utente.setNome(cryptedUser.getNome());
+				 utente.setCognome(cryptedUser.getCognome());
+				 return true;
+			 }
+			 
+			 
+		 }
+		 
+		 return false;
+	 }
 }
 
 

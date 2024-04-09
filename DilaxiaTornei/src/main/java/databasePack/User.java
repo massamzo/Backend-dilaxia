@@ -1,4 +1,4 @@
-package register;
+package databasePack;
 import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -99,7 +99,9 @@ public class User extends Database{
 	
 	
 	
-	public User newDetails() throws SQLException {
+	public User userWithCryptedPass() throws SQLException {
+		
+		
 		
 		 Connection conn = getConn();
 		 Statement stmt = conn.createStatement();
@@ -107,11 +109,16 @@ public class User extends Database{
 		 String query = "SELECT "+utentiTable+".email_utente as email, nome, cognome, password, data_creazione FROM "+utentiTable+" INNER JOIN "+accountTable+" ON "+utentiTable+".email_utente = "+accountTable+".email_utente WHERE "+accountTable+".email_utente = '"+this.email+"'";
 		 ResultSet rs = stmt.executeQuery(query);
 		 
+		 User newuser = null;
+		 if(rs.next()) {
+			 newuser = new User(rs.getString("email"), rs.getString("nome"), rs.getString("cognome"), rs.getString("password"));
+			 newuser.setDataCreazione(rs.getString("data_creazione"));
+			 return newuser;
+		 }
 		 
-		 User newuser = new User(rs.getString("email"), rs.getString("nome"), rs.getString("cognome"), rs.getString("password"));
-		 newuser.setDataCreazione(rs.getString("data_creazione"));
 		 
 		 return newuser;
+		
 	}
 	
 	

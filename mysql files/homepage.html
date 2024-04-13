@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>Homepage</title>
+	<script>
+		document.addEventListener("DOMContentLoaded", ()=>{
+			var xhttp = new XMLHttpRequest();
+			xhttp.withCredentials = true;
+			
+			xhttp.onreadystatechange = function() {
+				if (this.readyState == 4 && this.status == 200) {
+				// Typical action to be performed when the document is ready:
+				var risposta = JSON.parse(xhttp.responseText);
+				document.getElementById("demo").innerHTML = "welcome "+xhttp.responseText ;
+
+				var cookies = document.cookie.split(';');
+				console.log(cookies);
+				console.log(risposta);
+
+
+				}
+			};
+			xhttp.open("GET", "http://localhost:8080/DilaxiaTornei/Sessioninfo", true);
+			xhttp.setRequestHeader('Session-ID', "A90075CB74FA15D7CEEBF9B5F2BF8A7C");
+			xhttp.send();
+		});
+    </script>
+</head>
+  <body>
+
+	
+  <h1 id="demo">Welcome user! This is the homepage!</h1>
+
+
+  </body>
+</html>

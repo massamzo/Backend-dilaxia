@@ -14,6 +14,7 @@ import javax.servlet.http.HttpSession;
 
 import databasePack.DbRegisterLogin;
 import databasePack.User;
+import sessions.Sessionmanager;
 
 /**
  * Servlet implementation class Login
@@ -37,10 +38,21 @@ public class Login extends HttpServlet {
 		// TODO Auto-generated method stub
 		//response.getWriter().append("Served at: ").append(request.getContextPath());
 		
-		response.setHeader("Access-Control-Allow-Origin", "http://192.168.1.119"); // Replace with your domain
-	     response.setHeader("Access-Control-Allow-Methods", "GET, POST, OPTIONS");
-	     response.setHeader("Access-Control-Allow-Headers", "Content-Type, Authorization");
-	     response.setHeader("Access-Control-Allow-Credentials", "true"); // This allows the sharing of session cookies
+		response.setHeader("Access-Control-Allow-Origin", "http://192.168.1.115:5500"); // Allow requests from any origin
+        response.setHeader("Access-Control-Allow-Methods", "GET, POST, PUT, DELETE, OPTIONS");
+        response.setHeader("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept, Session-ID");
+	    response.setHeader("Access-Control-Allow-Credentials", "true"); 
+	    
+	    HttpSession session = request.getSession();
+		
+		
+		String session_nome = (String) session.getAttribute("nome");
+		
+		if(session_nome != null) {
+			response.sendRedirect("http://192.168.1.115:5500/homepage.html");  
+		}else {
+			response.sendRedirect("http://192.168.1.115:5500/login.html");  
+		}
 	}
 
 	/**
@@ -48,22 +60,17 @@ public class Login extends HttpServlet {
 	 */
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		// TODO Auto-generated method stub
-		doGet(request,response);
+		//doGet(request,response);
 		
 		//login methods
-		response.setHeader("Access-Control-Allow-Origin", "http://192.168.1.119"); // Replace with your domain
-	    response.setHeader("Access-Control-Allow-Methods", "GET, POST, OPTIONS");
-	    response.setHeader("Access-Control-Allow-Headers", "Content-Type, Authorization");
+		response.setHeader("Access-Control-Allow-Origin", "http://192.168.1.115:5500"); // Allow requests from any origin
+        response.setHeader("Access-Control-Allow-Methods", "GET, POST, PUT, DELETE, OPTIONS");
+        response.setHeader("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept, Session-ID");
 	    response.setHeader("Access-Control-Allow-Credentials", "true"); //
 		
 		
 		HttpSession session = request.getSession();
-		
-		String sessionId = session.getId();
 
-		String cookieValue = String.format("JSESSIONID=%s; Path=/DilaxiaTornei; Domain=192.168.1.119; Secure; HttpOnly; SameSite=None", sessionId);
-
-		response.addHeader("Set-Cookie", cookieValue);
 		
 		String session_nome = (String) session.getAttribute("nome");
 		
@@ -85,17 +92,22 @@ public class Login extends HttpServlet {
 					session.setAttribute("cognome", utente.getCognome());
 					session.setAttribute("email", utente.getEmail());
 					
+					String sessionId = session.getId();
 					
+					System.out.println("login key : ");
+					System.out.println(sessionId);
 					// send session information to the sessioninfo servlet
 				
 					System.out.println("sono entrato qui");
 					// cambiare con link vero frontend
 					
+					// saving the session
 					
+					Sessionmanager.sessionMap.put(sessionId, session);
 
 					// Check if redirect attribute is set
 					//response.getWriter().append("Session created");
-					response.sendRedirect("http://192.168.1.119/dilaxia/homepage.html"); 
+					response.sendRedirect("http://192.168.1.115:8080/DilaxiaTornei/Sessioninfo?sessionID=retrieve"); 
 					
 					
 					
@@ -111,7 +123,7 @@ public class Login extends HttpServlet {
 		}else {
 			
 			// cambiare con link vero frontend
-			System.out.println("session not created login");
+			
 			response.sendRedirect("http://192.168.1.115:5500/homepage.html");  
 			
 		}

@@ -4,32 +4,114 @@
 	<title>Homepage</title>
 	<script>
 		document.addEventListener("DOMContentLoaded", ()=>{
-			var xhttp = new XMLHttpRequest();
-			xhttp.withCredentials = true;
 			
-			xhttp.onreadystatechange = function() {
-				if (this.readyState == 4 && this.status == 200) {
-				// Typical action to be performed when the document is ready:
-				var risposta = JSON.parse(xhttp.responseText);
-				document.getElementById("demo").innerHTML = "welcome "+xhttp.responseText ;
+			try{
+				var params = new URLSearchParams(window.location.search);
 
-				var cookies = document.cookie.split(';');
-				console.log(cookies);
-				console.log(risposta);
+			var sessionID = params.get("sessionIDspysphare");
+			
+			if(sessionID == null){
 
+				// check if the cookie session id is created 
+				var sessionCookie = document.cookie.split(";");
+				var sessionIdcreated = false;
+				
 
+				for(i=0; i<sessionCookie.length; i++){
+
+					let cookie = sessionCookie[i];
+					if(cookie.startsWith("sessionIDspysphare=")){
+						sessionID = cookie.substring("sessionIDspysphare".length+1);
+						sessionIdcreated = true;
+						break;
+					}
+					
 				}
-			};
-			xhttp.open("GET", "http://localhost:8080/DilaxiaTornei/Sessioninfo", true);
-			xhttp.setRequestHeader('Session-ID', "A90075CB74FA15D7CEEBF9B5F2BF8A7C");
-			xhttp.send();
+
+				if(sessionIdcreated){
+					
+
+					var xhttp = new XMLHttpRequest();
+					xhttp.onreadystatechange = function() {
+						if (this.readyState == 4 && this.status == 200) {
+						// Typical action to be performed when the document is ready:
+						var jsonResponse = JSON.parse(xhttp.responseText);
+						document.getElementById("demo").innerHTML = xhttp.responseText;
+
+						if(jsonResponse['nome'] == 'null' || jsonResponse['nome'] == null){
+							window.location.replace("http://192.168.1.115:5500/login.html");
+						}
+						}
+					};
+
+					xhttp.open("GET", "http://192.168.1.115:8080/DilaxiaTornei/Sessioninfo?sessionID="+sessionID, true);
+					xhttp.send();
+				}else{
+
+					
+					window.location.replace("http://192.168.1.115:5500/login.html");
+				}
+				
+				console.log(document.cookie.split(";"));
+			
+				
+			}else{
+				console.log("sending request")
+				// if the session id is provided
+
+
+	
+		
+
+				// Create a new XMLHttpRequest object
+				var xhttp = new XMLHttpRequest();
+				
+				// Define the URL and method for the request
+				var url = "http://192.168.1.115:8080/DilaxiaTornei/Sessioninfo?sessionID="+sessionID;
+				var method = "GET"; // or "GET" depending on your servlet endpoint
+				
+				// Open the request
+				xhttp.open(method, url, true);
+			
+				
+				xhttp.onreadystatechange = function() {
+					if (this.readyState == 4 && this.status == 200) {
+						// Request completed successfully
+						console.log("recieved");
+						console.log(xhttp.responseText);
+						var jsonResponse = JSON.parse(xhttp.responseText);
+						document.getElementById("demo").innerHTML = xhttp.responseText;
+
+						if(jsonResponse['nome'] == 'null' || jsonResponse['nome'] == null){
+							window.location.replace("http://192.168.1.115:5500/login.html");
+							
+						}else{
+							document.cookie = "sessionIDspysphare="+sessionID;
+							window.location.replace("http://192.168.1.115:5500/homepage.html");
+						}
+						}
+					}
+				};
+			
+				// Send the request (optional: include request body)
+				
+				xhttp.send();
+
+				
+				
+			
+			}catch(e){
+				//window.location.replace("http://192.168.1.115:5500/login.html");
+			}
+
+
 		});
     </script>
 </head>
   <body>
 
 	
-  <h1 id="demo">Welcome user! This is the homepage!</h1>
+  <h1 id="demo">ERROR</h1>
 
 
   </body>

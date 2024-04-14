@@ -36,12 +36,23 @@ public class Register extends HttpServlet {
 		
 		
 
-		response.setHeader("Access-Control-Allow-Origin", "http://192.168.1.119"); // Replace with your domain
-	     response.setHeader("Access-Control-Allow-Methods", "GET, POST, OPTIONS");
-	     response.setHeader("Access-Control-Allow-Headers", "Content-Type, Authorization");
-	     response.setHeader("Access-Control-Allow-Credentials", "true"); // This allows the sharing of session cookies
+		response.setHeader("Access-Control-Allow-Origin", "http://127.0.0.1:5500"); // Allow requests from any origin
+        response.setHeader("Access-Control-Allow-Methods", "GET, POST, PUT, DELETE, OPTIONS");
+        response.setHeader("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept, Session-ID");
+	    response.setHeader("Access-Control-Allow-Credentials", "true"); 
 		
 		response.getWriter().append("Served at: ").append(request.getContextPath());
+		
+		HttpSession session = request.getSession();
+		
+		
+		String session_nome = (String) session.getAttribute("nome");
+		
+		if(session_nome != null) {
+			response.sendRedirect("http://192.168.1.115:5500/homepage.html");  
+		}else {
+			response.sendRedirect("http://192.168.1.115:5500/index.html");  // register page
+		}
 	}
 
 	/**
@@ -49,21 +60,21 @@ public class Register extends HttpServlet {
 	 */
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		// TODO Auto-generated method stub
-		doGet(request, response);
-		response.setHeader("Access-Control-Allow-Origin", "http://192.168.1.119"); // Replace with your domain
-	     response.setHeader("Access-Control-Allow-Methods", "GET, POST, OPTIONS");
-	     response.setHeader("Access-Control-Allow-Headers", "Content-Type, Authorization");
-	     response.setHeader("Access-Control-Allow-Credentials", "true"); //
+		//doGet(request, response);
+		response.setHeader("Access-Control-Allow-Origin", "http://192.168.1.115:5500"); // Allow requests from any origin
+        response.setHeader("Access-Control-Allow-Methods", "GET, POST, PUT, DELETE, OPTIONS");
+        response.setHeader("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept, Session-ID");
+	    response.setHeader("Access-Control-Allow-Credentials", "true"); 
 	     
 	     
 		
 		HttpSession session = request.getSession();
 		
-		String sessionId = session.getId();
-
-		String cookieValue = String.format("JSESSIONID=%s; Path=/DilaxiaTornei; Domain=192.168.1.119; Secure; HttpOnly; SameSite=None", sessionId);
-
-		response.addHeader("Set-Cookie", cookieValue);
+//		String sessionId = session.getId();
+//
+//		String cookieValue = String.format("JSESSIONID=%s; Path=/DilaxiaTornei; Domain=127.0.0.1:5500; Secure; HttpOnly; SameSite=None", sessionId);
+//
+//		response.addHeader("Set-Cookie", cookieValue);
 
 		
 		String session_nome = (String) session.getAttribute("nome");
@@ -84,21 +95,19 @@ public class Register extends HttpServlet {
 				
 				//create session
 				
-//				session.setAttribute("nome", nome);
-//				session.setAttribute("cognome", cognome);
-//				session.setAttribute("email", email);
+
 				
 				// mail sending
 				
 				// reindirizzamento a login
 				
-				response.sendRedirect("http://192.168.1.115:8080/DilaxiaTornei/Login");  
+				response.sendRedirect("http://192.168.1.115:5500/login.html");  
 				
 			}
 
 		}else {
 			
-			System.out.println("session not created");
+			response.sendRedirect("http://192.168.1.115:5500/homepage.html");
 		}
 		
 		// mettere link frontend

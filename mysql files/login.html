@@ -2,10 +2,46 @@
 <html>
 <head>
 <title>HTML Tutorial</title>
+<script>
+  document.addEventListener("DOMContentLoaded", ()=>{
+      var sessionCookie = document.cookie.split(";");
+      var sessionIdcreated = false;
+
+
+      for(i=0; i<sessionCookie.length; i++){
+
+        let cookie = sessionCookie[i];
+        if(cookie.startsWith("sessionIDspysphare=")){
+          sessionID = cookie.substring("sessionIDspysphare".length+1);
+          sessionIdcreated = true;
+          break;
+        }
+
+      }
+
+      if(sessionIdcreated){
+
+            var xhttp = new XMLHttpRequest();
+            xhttp.onreadystatechange = function() {
+            if (this.readyState == 4 && this.status == 200) {
+            // Typical action to be performed when the document is ready:
+            var jsonResponse = JSON.parse(xhttp.responseText);
+
+            if(jsonResponse['nome'] != 'null' || jsonResponse['nome'] != null){
+              window.location.replace("http://192.168.1.115:5500/homepage.html");
+            }
+            }
+            };
+
+            xhttp.open("GET", "http://192.168.1.115:8080/DilaxiaTornei/Sessioninfo?sessionID="+sessionID, true);
+            xhttp.send();
+       }
+      });
+</script>
 </head>
   <body>
 
-  <form action="http://localhost:8080/DilaxiaTornei/Login" method="post">
+  <form action="http://192.168.1.115:8080/DilaxiaTornei/Login" method="post">
     <label for="email">Email:</label><br>
     <input type="text" id="email" name="email"><br>
     <label for="pass">Password:</label><br>

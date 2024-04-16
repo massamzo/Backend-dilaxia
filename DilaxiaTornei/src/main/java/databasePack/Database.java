@@ -13,6 +13,7 @@ public class Database {
 	public static final String database = "torneiscuola";
 	
 	public String utentiTable = "utenti";
+	public String tempUtentiTable = "temp_utenti";
 	public String accountTable = "account";
 	
 	private Connection conn = null;

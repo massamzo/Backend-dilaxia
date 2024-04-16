@@ -84,7 +84,7 @@ public class User extends Database{
 		 Connection conn = getConn();
 		 Statement stmt = conn.createStatement();
 		 
-		 String query = "SELECT "+utentiTable+".email_utente as email, nome, cognome, password FROM "+utentiTable+" INNER JOIN "+accountTable+" ON "+utentiTable+".email_utente = "+accountTable+".email_utente WHERE "+accountTable+".email_utente = '"+this.email+"'";
+		 String query = "SELECT email_utente as email, nome, cognome, password FROM "+utentiTable+" WHERE email_utente='"+this.email+"'";
 		 ResultSet rs = stmt.executeQuery(query);
 		 
 		 if(rs.next()) {
@@ -106,7 +106,7 @@ public class User extends Database{
 		 Connection conn = getConn();
 		 Statement stmt = conn.createStatement();
 		 
-		 String query = "SELECT "+utentiTable+".email_utente as email, nome, cognome, password, data_creazione FROM "+utentiTable+" INNER JOIN "+accountTable+" ON "+utentiTable+".email_utente = "+accountTable+".email_utente WHERE "+accountTable+".email_utente = '"+this.email+"'";
+		 String query = "SELECT email_utente as email, nome, cognome, password, data_creazione FROM "+utentiTable+" WHERE email_utente = '"+this.email+"'";
 		 ResultSet rs = stmt.executeQuery(query);
 		 
 		 User newuser = null;

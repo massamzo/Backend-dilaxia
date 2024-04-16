@@ -41,7 +41,7 @@ public class Sessioninfo2 extends HttpServlet {
 	    response.setHeader("Access-Control-Allow-Credentials", "true"); 
 	    
 	    try {
-	    	System.out.println("sto eseguendo get");
+	    //	System.out.println("sto eseguendo get");
 	    	String sessionIdValue = request.getParameter("sessionID");
 	    	HttpSession session = request.getSession();
 	    	String sessionId = "";
@@ -58,7 +58,7 @@ public class Sessioninfo2 extends HttpServlet {
 					//response.sendRedirect("http://192.168.1.115:8080/DilaxiaTornei/Login");
 				 }
 	    		
-	    	System.out.println("redirection erro");
+	    	//System.out.println("redirection erro");
 	    		
 	    	}else if(sessionIdValue != null) {
 //	    		request.setAttribute("Session-ID", sessionIdValue);
@@ -91,17 +91,16 @@ public class Sessioninfo2 extends HttpServlet {
 				String nome = (String) session.getAttribute("nome");
 				String cognome = (String) session.getAttribute("cognome");
 				String email = (String) session.getAttribute("email");
-				System.out.println("localeee");
-				System.out.println(nome);
-				System.out.println(cognome);
+//				System.out.println("localeee");
+//				System.out.println(nome);
+//				System.out.println(cognome);
 				
 				
 				  StringBuilder jsonResponse = new StringBuilder();
 				    jsonResponse.append("{");
 				    jsonResponse.append("\"nome\": \""+nome+"\",");
 				    jsonResponse.append("\"cognome\": \""+cognome+"\",");
-				    jsonResponse.append("\"email\": \""+email+"\",");
-				    jsonResponse.append("\"id\": \""+sessionId+"\"");
+				    jsonResponse.append("\"email\": \""+email+"\"");
 				    jsonResponse.append("}");
 				    
 				   
@@ -138,59 +137,7 @@ public class Sessioninfo2 extends HttpServlet {
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		// TODO Auto-generated method stub
 		//doGet(request, response);
-//		System.out.println("post request");
-//		response.setHeader("Access-Control-Allow-Origin", "http://192.168.1.115:5500"); // Allow requests from any origin
-//        response.setHeader("Access-Control-Allow-Methods", "GET, POST, PUT, DELETE, OPTIONS");
-//        response.setHeader("Access-Control-Allow-Headers", "*");
-//	    response.setHeader("Access-Control-Allow-Credentials", "true"); 
-//	    
-//	    String id = request.getHeader("Session-ID");
-//	    try {
-//	    	 // quando richiede dati dopo aver ricevuto session id
-//	    	
-//	    		HttpSession session = request.getSession();
-//	    		
-//	    		System.out.println("recieved something");
-//		    	
-//				String sessionId = session.getId();
-//				
-//				System.out.println("id:"+sessionId);
-//			
-//
-//				
-//
-//				System.out.println(sessionId);
-//				
-//				String nome = (String) session.getAttribute("nome");
-//				String cognome = (String) session.getAttribute("cognome");
-//				String email = (String) session.getAttribute("email");
-//				System.out.println("localeee");
-//				System.out.println(nome);
-//				System.out.println(cognome);
-//				
-//				
-//				  StringBuilder jsonResponse = new StringBuilder();
-//				    jsonResponse.append("{");
-//				    jsonResponse.append("\"nome\": \""+nome+"\",");
-//				    jsonResponse.append("\"cognome\": \""+cognome+"\",");
-//				    jsonResponse.append("\"email\": \""+email+"\"");
-//				    jsonResponse.append("}");
-//				    
-//				   
-//				    
-//				 response.getWriter().append(jsonResponse);
-//				 
-//				 if(nome != null) {
-//					 response.getWriter().append(jsonResponse);
-//					
-//				 }else {
-//					 response.getWriter().append(jsonResponse); 
-//					 response.sendRedirect("http://192.168.1.115:8080/DilaxiaTornei/Login");
-//				 }
-//	    	
-//	    }catch(Exception e) {
-//	    	e.printStackTrace();
-//	    }
+
 		    
 	}
 

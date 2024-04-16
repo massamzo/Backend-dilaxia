@@ -5,8 +5,8 @@
 	<script>
 		document.addEventListener("DOMContentLoaded", ()=>{
 			
-			try{
-				var params = new URLSearchParams(window.location.search);
+			
+			var params = new URLSearchParams(window.location.search);
 
 			var sessionID = params.get("sessionIDspysphare");
 			
@@ -61,49 +61,49 @@
 
 
 	
-		
-
-				// Create a new XMLHttpRequest object
-				var xhttp = new XMLHttpRequest();
 				
-				// Define the URL and method for the request
-				var url = "http://192.168.1.115:8080/DilaxiaTornei/Sessioninfo?sessionID="+sessionID;
-				var method = "GET"; // or "GET" depending on your servlet endpoint
+					// Create a new XMLHttpRequest object
+					var xhttp = new XMLHttpRequest();
+					
+					// Define the URL and method for the request
+					var url = "http://192.168.1.115:8080/DilaxiaTornei/Sessioninfo?sessionID="+sessionID;
+					var method = "GET"; // or "GET" depending on your servlet endpoint
+					
+					// Open the request
+					xhttp.open(method, url, true);
 				
-				// Open the request
-				xhttp.open(method, url, true);
-			
-				
-				xhttp.onreadystatechange = function() {
-					if (this.readyState == 4 && this.status == 200) {
-						// Request completed successfully
-						console.log("recieved");
-						console.log(xhttp.responseText);
-						var jsonResponse = JSON.parse(xhttp.responseText);
-						document.getElementById("demo").innerHTML = xhttp.responseText;
-
-						if(jsonResponse['nome'] == 'null' || jsonResponse['nome'] == null){
-							window.location.replace("http://192.168.1.115:5500/login.html");
+					
+					xhttp.onreadystatechange = function() {
+						if (this.readyState == 4 && this.status == 200) {
+							// Request completed successfully
+							console.log("recieved");
+							console.log(xhttp.responseText);
+							var jsonResponse = "";
+							try{
+								jsonResponse = JSON.parse(xhttp.responseText);
+							}catch(e){
+								window.location.replace("http://192.168.1.115:5500/login.html");
+							}
 							
-						}else{
-							document.cookie = "sessionIDspysphare="+sessionID;
-							window.location.replace("http://192.168.1.115:5500/homepage.html");
-						}
-						}
-					}
-				};
-			
-				// Send the request (optional: include request body)
-				
-				xhttp.send();
+							document.getElementById("demo").innerHTML = xhttp.responseText;
+
+							if(jsonResponse['nome'] == 'null' || jsonResponse['nome'] == null){
+								window.location.replace("http://192.168.1.115:5500/login.html");
+								
+							}else{
+								document.cookie = "sessionIDspysphare="+sessionID;
+								window.location.replace("http://192.168.1.115:5500/homepage.html");
+							}
+							}
+						};
+					
+					// Send the request (optional: include request body)
+					
+					xhttp.send();
 
 				
 				
-			
-			}catch(e){
-				//window.location.replace("http://192.168.1.115:5500/login.html");
 			}
-
 
 		});
     </script>

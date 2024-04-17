@@ -6,7 +6,7 @@ import java.util.Random;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
-import javax.servlet.http.Cookie;
+
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -15,6 +15,7 @@ import javax.servlet.http.HttpSession;
 import databasePack.DbRegisterLogin;
 import databasePack.User;
 import mail.Mailer;
+import sessions.Redirections;
 /**
  * Servlet implementation class Register
  */
@@ -24,6 +25,8 @@ public class Register extends HttpServlet {
 	
     private static final int code_length = 5;
     private static final String codes = "01A2BCD3456EFGH78IJK9";
+    
+    Redirections redirect = new Redirections();
     
     private String error;
     /**
@@ -55,7 +58,7 @@ public class Register extends HttpServlet {
 		
 		
 
-		response.setHeader("Access-Control-Allow-Origin", "http://127.0.0.1:5500"); // Allow requests from any origin
+		response.setHeader("Access-Control-Allow-Origin", redirect.getCORS_ALLOWED()); // Allow requests from any origin
         response.setHeader("Access-Control-Allow-Methods", "GET, POST, PUT, DELETE, OPTIONS");
         response.setHeader("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept, Session-ID");
 	    response.setHeader("Access-Control-Allow-Credentials", "true"); 
@@ -68,9 +71,9 @@ public class Register extends HttpServlet {
 		String session_nome = (String) session.getAttribute("nome");
 		
 		if(session_nome != null) {
-			response.sendRedirect("http://192.168.1.115:5500/homepage.html");  
+			response.sendRedirect(redirect.getHOME_PAGE());  
 		}else {
-			response.sendRedirect("http://192.168.1.115:5500/index.html");  // register page
+			response.sendRedirect(redirect.getREGISTRATION_PAGE());  // register page
 		}
 	}
 
@@ -80,7 +83,7 @@ public class Register extends HttpServlet {
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		// TODO Auto-generated method stub
 		//doGet(request, response);
-		response.setHeader("Access-Control-Allow-Origin", "http://192.168.1.115:5500"); // Allow requests from any origin
+		response.setHeader("Access-Control-Allow-Origin", redirect.getCORS_ALLOWED()); // Allow requests from any origin
         response.setHeader("Access-Control-Allow-Methods", "GET, POST, PUT, DELETE, OPTIONS");
         response.setHeader("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept, Session-ID");
 	    response.setHeader("Access-Control-Allow-Credentials", "true"); 
@@ -118,7 +121,7 @@ public class Register extends HttpServlet {
 					
 					// restituisco con errore
 					error="Utente esiste!";
-					response.sendRedirect("http://192.168.1.115:5500/index.html?error="+error); 
+					response.sendRedirect(redirect.getREGISTRATION_PAGE()+"?error="+error); 
 					
 					
 				}else {
@@ -130,18 +133,27 @@ public class Register extends HttpServlet {
 					
 				
 					// manda la mail 
-					Mailer mail = new Mailer(email, nome, "http://192.168.1.115:8080/DilaxiaTornei/ConfirmRegistration?email="+email+"&otp="+otp);
+					Mailer mail = new Mailer(email, nome, redirect.getCONFIRM_REGISTRATION_SERVLET()+"?email="+email+"&otp="+otp);
 					boolean sent = mail.send();
 					
-					//reinderizza sulla pagina di conferma
+					if(sent) {
+						//reinderizza sulla pagina di conferma
+						
+						response.sendRedirect(redirect.getTO_CONFIRM_PAGE());  
+					}else {
+						
+						//reinderizza sulla pagina di registrazione
+						
+						response.sendRedirect(redirect.getREGISTRATION_PAGE());  
+					}
 					
-					response.sendRedirect("http://192.168.1.115:5500/toconfirm.html");  
+					
 				}
 			} catch (SQLException e) {
 				// TODO Auto-generated catch block
 				
 				error="Registrazione non è andata a buon fine";
-				response.sendRedirect("http://192.168.1.115:5500/index.html?error="+error); 
+				response.sendRedirect(redirect.getREGISTRATION_PAGE()+"?error="+error); 
 				e.printStackTrace();
 			}
 			
@@ -149,7 +161,7 @@ public class Register extends HttpServlet {
 
 		}else {
 			
-			response.sendRedirect("http://192.168.1.115:5500/homepage.html");
+			response.sendRedirect(redirect.getHOME_PAGE());
 		}
 		
 		// mettere link frontend

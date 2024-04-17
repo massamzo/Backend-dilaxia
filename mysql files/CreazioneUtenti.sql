@@ -1,7 +1,7 @@
-DROP DATABASE IF EXISTS torneiscuola;
-CREATE DATABASE torneiscuola;
+DROP DATABASE IF EXISTS playsphere;
+CREATE DATABASE playsphere;
 
-USE torneiscuola;
+USE playsphere;
 
 CREATE TABLE utenti(
     email_utente VARCHAR(100) PRIMARY KEY NOT NULL,

@@ -11,6 +11,7 @@ import javax.servlet.http.HttpServletResponse;
 
 import databasePack.DbRegisterLogin;
 import databasePack.User;
+import sessions.Redirections;
 
 /**
  * Servlet implementation class ConfirmRegistration
@@ -18,7 +19,7 @@ import databasePack.User;
 @WebServlet("/ConfirmRegistration")
 public class ConfirmRegistration extends HttpServlet {
 	private static final long serialVersionUID = 1L;
-       
+	Redirections redirect = new Redirections();
     /**
      * @see HttpServlet#HttpServlet()
      */
@@ -37,7 +38,7 @@ public class ConfirmRegistration extends HttpServlet {
 		String otp = request.getParameter("otp");
 		
 		if(email == null || otp == null) {
-			response.sendRedirect("http://192.168.1.115:5500/index.html");
+			response.sendRedirect(redirect.getREGISTRATION_PAGE());
 		}else {
 			
 			// conferma la registrazione 
@@ -50,7 +51,7 @@ public class ConfirmRegistration extends HttpServlet {
 					
 					// return to the registration page with error
 					String error="Utente esiste!";
-					response.sendRedirect("http://192.168.1.115:5500/index.html?error="+error); 
+					response.sendRedirect(redirect.getREGISTRATION_PAGE()+"?error="+error); 
 					
 					
 				}else {
@@ -60,14 +61,14 @@ public class ConfirmRegistration extends HttpServlet {
 					database.confirmRegistration(utente, otp);
 					
 					// se tutto è andato a buon fine allora reindirizzo sulla pagina di conferma
-					response.sendRedirect("http://192.168.1.115:5500/confirm.html"); 
+					response.sendRedirect(redirect.getCONFIRMATION_PAGE()); 
 				}
 			} catch (SQLException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
 				
 				String error="la registrazione non è andata a buon fine";
-				response.sendRedirect("http://192.168.1.115:5500/index.html?error="+error);
+				response.sendRedirect(redirect.getREGISTRATION_PAGE()+"?error="+error);
 			}
 		}
 		response.getWriter().append("Served at: ").append(request.getContextPath());

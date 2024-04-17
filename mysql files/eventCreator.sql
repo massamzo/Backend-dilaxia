@@ -1,5 +1,5 @@
 -- Enable Event Scheduler if not already enabled
-USE torneiscuola;
+USE playsphere;
 SET GLOBAL event_scheduler = ON;
 
 -- Create the event

@@ -2,7 +2,7 @@ package login;
 
 import java.io.IOException;
 
-import javax.servlet.http.Cookie;
+
 import java.sql.SQLException;
 
 import javax.servlet.ServletException;
@@ -14,6 +14,7 @@ import javax.servlet.http.HttpSession;
 
 import databasePack.DbRegisterLogin;
 import databasePack.User;
+import sessions.Redirections;
 import sessions.Sessionmanager;
 
 /**
@@ -22,7 +23,7 @@ import sessions.Sessionmanager;
 @WebServlet("/Login")
 public class Login extends HttpServlet {
 	private static final long serialVersionUID = 1L;
-       
+	Redirections redirect = new Redirections();
     /**
      * @see HttpServlet#HttpServlet()
      */
@@ -38,7 +39,7 @@ public class Login extends HttpServlet {
 		// TODO Auto-generated method stub
 		//response.getWriter().append("Served at: ").append(request.getContextPath());
 		
-		response.setHeader("Access-Control-Allow-Origin", "http://192.168.1.115:5500"); // Allow requests from any origin
+		response.setHeader("Access-Control-Allow-Origin", redirect.getCORS_ALLOWED()); // Allow requests from any origin
         response.setHeader("Access-Control-Allow-Methods", "GET, POST, PUT, DELETE, OPTIONS");
         response.setHeader("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept, Session-ID");
 	    response.setHeader("Access-Control-Allow-Credentials", "true"); 
@@ -49,9 +50,9 @@ public class Login extends HttpServlet {
 		String session_nome = (String) session.getAttribute("nome");
 		
 		if(session_nome != null) {
-			response.sendRedirect("http://192.168.1.115:5500/homepage.html");  
+			response.sendRedirect(redirect.getHOME_PAGE());  
 		}else {
-			response.sendRedirect("http://192.168.1.115:5500/login.html");  
+			response.sendRedirect(redirect.getLOGIN_PAGE());  
 		}
 	}
 
@@ -63,7 +64,7 @@ public class Login extends HttpServlet {
 		//doGet(request,response);
 		
 		//login methods
-		response.setHeader("Access-Control-Allow-Origin", "http://192.168.1.115:5500"); // Allow requests from any origin
+		response.setHeader("Access-Control-Allow-Origin", redirect.getCORS_ALLOWED()); // Allow requests from any origin
         response.setHeader("Access-Control-Allow-Methods", "GET, POST, PUT, DELETE, OPTIONS");
         response.setHeader("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept, Session-ID");
 	    response.setHeader("Access-Control-Allow-Credentials", "true"); //
@@ -107,13 +108,13 @@ public class Login extends HttpServlet {
 
 					// Check if redirect attribute is set
 					//response.getWriter().append("Session created");
-					response.sendRedirect("http://192.168.1.115:8080/DilaxiaTornei/Sessioninfo?sessionID=retrieve"); 
+					response.sendRedirect(redirect.getSESSION_INFO_SERVLET()+"?sessionID=retrieve"); 
 					
 					
 					
 				}else {
 					String error="Username o password sbagliata ";
-					response.sendRedirect("http://192.168.1.115:5500/index.html?error="+error);
+					response.sendRedirect(redirect.getREGISTRATION_PAGE()+"?error="+error);
 				}
 				
 				
@@ -127,7 +128,7 @@ public class Login extends HttpServlet {
 			
 			// cambiare con link vero frontend
 			
-			response.sendRedirect("http://192.168.1.115:5500/homepage.html");  
+			response.sendRedirect(redirect.getHOME_PAGE());  
 			
 		}
 	}

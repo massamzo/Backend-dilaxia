@@ -8,9 +8,9 @@ import org.apache.tomcat.dbcp.dbcp2.BasicDataSource;
 public class Database {
 	
 	public static final String percorso = "jdbc:mysql://localhost:3306/";
-	public static final String username = "torneiscuola";
+	public static final String username = "playsphere";
 	public static final String password = "TorDil432@!";
-	public static final String database = "torneiscuola";
+	public static final String database = "playsphere";
 	
 	public String utentiTable = "utenti";
 	public String tempUtentiTable = "temp_utenti";

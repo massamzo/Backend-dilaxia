@@ -8,8 +8,8 @@ import javax.mail.internet.*;
 
 public class Mailer {
 	
-	private static final String sender = "zohaibmassam40@gmail.com";
-	private static final String password = "moxiphjaatlajrrh";
+	private static final String sender = "playsphereofficial@gmail.com";
+	private static final String password = "znnxncdczbduvbpx";
 	private static final String host = "smtp.gmail.com";
 	private static final String port = "587";
 	//moxiphjaatlajrrh

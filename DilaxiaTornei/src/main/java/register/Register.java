@@ -1,6 +1,8 @@
 package register;
 
 import java.io.IOException;
+import java.sql.SQLException;
+import java.util.Random;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -12,6 +14,7 @@ import javax.servlet.http.HttpSession;
 
 import databasePack.DbRegisterLogin;
 import databasePack.User;
+import mail.Mailer;
 /**
  * Servlet implementation class Register
  */
@@ -19,13 +22,29 @@ import databasePack.User;
 public class Register extends HttpServlet {
 	private static final long serialVersionUID = 1L;
 	
-       
+    private static final int code_length = 5;
+    private static final String codes = "01A2BCD3456EFGH78IJK9";
+    
+    private String error;
     /**
      * @see HttpServlet#HttpServlet()
      */
     public Register() {
         super();
         // TODO Auto-generated constructor stub
+    }
+    
+    
+    private String generateOTP() {
+    	
+    	char[] code = new char[code_length];
+    	Random rn = new Random();
+    	for(int i=0; i < code_length; i++) {
+    		code[i] = codes.charAt(rn.nextInt(code.length));
+    	}
+    	
+    	return new String(code);
+    	
     }
 
 	/**
@@ -91,19 +110,42 @@ public class Register extends HttpServlet {
 			
 			
 			DbRegisterLogin database = new DbRegisterLogin();
-			if(database.createAccount(utente)) { //if everything went right
+			
+			
+			
+			try {
+				if(utente.userExists()) {
+					
+					// restituisco con errore
+					error="Utente esiste!";
+					response.sendRedirect("http://192.168.1.115:5500/index.html?error="+error); 
+					
+					
+				}else {
+					
+					// salva dati in una tabella temporanea
+					String otp = generateOTP();
+					
+					database.createTempAccount(utente, otp);
+					
 				
-				//create session
+					// manda la mail 
+					Mailer mail = new Mailer(email, nome, "http://192.168.1.115:8080/DilaxiaTornei/ConfirmRegistration?email="+email+"&otp="+otp);
+					boolean sent = mail.send();
+					
+					//reinderizza sulla pagina di conferma
+					
+					response.sendRedirect("http://192.168.1.115:5500/toconfirm.html");  
+				}
+			} catch (SQLException e) {
+				// TODO Auto-generated catch block
 				
-
-				
-				// mail sending
-				
-				// reindirizzamento a login
-				
-				response.sendRedirect("http://192.168.1.115:5500/login.html");  
-				
+				error="Registrazione non è andata a buon fine";
+				response.sendRedirect("http://192.168.1.115:5500/index.html?error="+error); 
+				e.printStackTrace();
 			}
+			
+			
 
 		}else {
 			

@@ -93,9 +93,9 @@ public class Login extends HttpServlet {
 					session.setAttribute("email", utente.getEmail());
 					
 					String sessionId = session.getId();
-					
-					System.out.println("login key : ");
-					System.out.println(sessionId);
+//					
+//					System.out.println("login key : ");
+//					System.out.println(sessionId);
 					// send session information to the sessioninfo servlet
 				
 					System.out.println("sono entrato qui");
@@ -111,6 +111,9 @@ public class Login extends HttpServlet {
 					
 					
 					
+				}else {
+					String error="Username o password sbagliata ";
+					response.sendRedirect("http://192.168.1.115:5500/index.html?error="+error);
 				}
 				
 				

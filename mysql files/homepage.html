@@ -2,6 +2,7 @@
 <html>
 <head>
 	<title>Homepage</title>
+	<script type="text/javascript" src="./globalVar.js"></script>
 	<script>
 		document.addEventListener("DOMContentLoaded", ()=>{
 			
@@ -39,17 +40,17 @@
 						document.getElementById("demo").innerHTML = xhttp.responseText;
 
 						if(jsonResponse['nome'] == 'null' || jsonResponse['nome'] == null){
-							window.location.replace("http://192.168.1.115:5500/login.html");
+							window.location.replace(loginPage);
 						}
 						}
 					};
 
-					xhttp.open("GET", "http://192.168.1.115:8080/DilaxiaTornei/Sessioninfo?sessionID="+sessionID, true);
+					xhttp.open("GET", sessionInfoServlet+"?sessionID="+sessionID, true);
 					xhttp.send();
 				}else{
 
 					
-					window.location.replace("http://192.168.1.115:5500/login.html");
+					window.location.replace(loginPage);
 				}
 				
 				console.log(document.cookie.split(";"));
@@ -66,7 +67,7 @@
 					var xhttp = new XMLHttpRequest();
 					
 					// Define the URL and method for the request
-					var url = "http://192.168.1.115:8080/DilaxiaTornei/Sessioninfo?sessionID="+sessionID;
+					var url = sessionInfoServlet+"?sessionID="+sessionID;
 					var method = "GET"; // or "GET" depending on your servlet endpoint
 					
 					// Open the request
@@ -82,17 +83,17 @@
 							try{
 								jsonResponse = JSON.parse(xhttp.responseText);
 							}catch(e){
-								window.location.replace("http://192.168.1.115:5500/login.html");
+								window.location.replace(loginPage);
 							}
 							
 							document.getElementById("demo").innerHTML = xhttp.responseText;
 
 							if(jsonResponse['nome'] == 'null' || jsonResponse['nome'] == null){
-								window.location.replace("http://192.168.1.115:5500/login.html");
+								window.location.replace(loginPage);
 								
 							}else{
 								document.cookie = "sessionIDspysphare="+sessionID;
-								window.location.replace("http://192.168.1.115:5500/homepage.html");
+								window.location.replace(homePage);
 							}
 							}
 						};

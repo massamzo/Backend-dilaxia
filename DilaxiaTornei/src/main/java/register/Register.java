@@ -107,12 +107,31 @@ public class Register extends HttpServlet {
 			String nome = request.getParameter("nome");
 			String cognome = request.getParameter("cognome");
 			String password = request.getParameter("password");
+			String sesso = request.getParameter("sesso");
+			String ddn = request.getParameter("ddn");
 			
-			User utente = new User(email, nome, cognome, password);
+			User utente = null;
+			
+			try {
+				utente = new User(email, nome, cognome, password,sesso, ddn);
+			} catch (SQLException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
 			
 			
 			
-			DbRegisterLogin database = new DbRegisterLogin();
+			DbRegisterLogin database = null;
+			try {
+				
+				
+				database = new DbRegisterLogin();
+				
+				
+			} catch (SQLException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
 			
 			
 			

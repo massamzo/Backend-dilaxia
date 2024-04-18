@@ -80,8 +80,17 @@ public class Login extends HttpServlet {
 			String email = request.getParameter("email");
 			String password = request.getParameter("password");
 			
-			User utente = new User(email, password);
-			DbRegisterLogin database = new DbRegisterLogin();
+			User utente = null;
+			DbRegisterLogin database = null;
+			try {
+				utente = new User(email, password);
+				database = new DbRegisterLogin();
+			} catch (SQLException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+			
+			
 			
 			try {
 				

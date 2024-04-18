@@ -1,3 +1,4 @@
+
 package databasePack;
 import java.sql.Connection;
 import java.sql.ResultSet;
@@ -12,18 +13,35 @@ import java.time.format.DateTimeFormatter; // Import the DateTimeFormatter class
 
 
 public class DbRegisterLogin extends Database {
+	private Connection conn = null;
+	private QueryManager qm;
 	
-	public DbRegisterLogin() {
+	
+	public DbRegisterLogin() throws SQLException {
 		super();
-		
+		conn = getConn();
+		qm = new QueryManager(conn);
 	}
 	
 	 private void insertUtente(User utente) throws SQLException {
 		 String now = dateTime();
-		 Connection conn = getConn();
-		 Statement stmt = conn.createStatement();
-		 String sql = "INSERT INTO "+utentiTable+"(email_utente, nome, cognome, password,data_creazione) VALUES('"+utente.getEmail()+"', '"+utente.getNome()+"', '"+utente.getCognome()+"', '"+utente.getPassword()+"', '"+now+"')";
-		 stmt.executeUpdate(sql);
+		 
+		// QueryManager.INSERT_USER_STM.setString(1,utentiTable);
+		 
+		 QueryManager.INSERT_USER_STM.setString(1,utente.getEmail());
+		 QueryManager.INSERT_USER_STM.setString(2,utente.getNome());
+		 QueryManager.INSERT_USER_STM.setString(3,utente.getCognome());
+		 QueryManager.INSERT_USER_STM.setString(4,utente.getPassword());
+		 QueryManager.INSERT_USER_STM.setString(5,utente.getDdn());
+		 QueryManager.INSERT_USER_STM.setString(6,utente.getSesso());
+		 QueryManager.INSERT_USER_STM.setString(7,now);
+		 QueryManager.INSERT_USER_STM.setString(8,utente.getFlag());
+		 
+		 QueryManager.INSERT_USER_STM.executeUpdate();
+		 
+//		 Statement stmt = conn.createStatement();
+//		 String sql = "INSERT INTO "+utentiTable+"(email_utente, nome, cognome, password,data_creazione) VALUES('"+utente.getEmail()+"', '"+utente.getNome()+"', '"+utente.getCognome()+"', '"+utente.getPassword()+"', '"+now+"')";
+//		 stmt.executeUpdate(sql);
 	 }
 	 
 	 
@@ -42,10 +60,25 @@ public class DbRegisterLogin extends Database {
 	 
 	 private void insertTempUtente(User utente, String otp) throws SQLException {
 		 String date_time = dateTime();
-		 Connection conn = getConn();
-		 Statement stmt = conn.createStatement();		 
-		 String sql = "INSERT INTO "+tempUtentiTable+"(email_utente, nome, cognome, password, otp, expire_at) VALUES('"+utente.getEmail()+"', '"+utente.getNome()+"', '"+utente.getCognome()+"', '"+utente.getPassword()+"', '"+otp+"', '"+date_time+"')";
-		 stmt.executeUpdate(sql);
+		 
+		 //QueryManager.INSERT_TEMP_USER_STM.setString(1,tempUtentiTable);
+		 
+		 QueryManager.INSERT_TEMP_USER_STM.setString(1,utente.getEmail());
+		 QueryManager.INSERT_TEMP_USER_STM.setString(2,utente.getNome());
+		 QueryManager.INSERT_TEMP_USER_STM.setString(3,utente.getCognome());
+		 QueryManager.INSERT_TEMP_USER_STM.setString(4,utente.getPassword());
+		 QueryManager.INSERT_TEMP_USER_STM.setString(5,utente.getDdn());
+		 QueryManager.INSERT_TEMP_USER_STM.setString(6,utente.getSesso());
+		 QueryManager.INSERT_TEMP_USER_STM.setString(7,otp);
+		 QueryManager.INSERT_TEMP_USER_STM.setString(8,utente.getFlag());
+		 QueryManager.INSERT_TEMP_USER_STM.setString(9,date_time);
+		 
+		 
+		 QueryManager.INSERT_TEMP_USER_STM.executeUpdate();
+		 
+//		 Statement stmt = conn.createStatement();		 
+//		 String sql = "INSERT INTO "+tempUtentiTable+"(email_utente, nome, cognome, password, otp, expire_at) VALUES('"+utente.getEmail()+"', '"+utente.getNome()+"', '"+utente.getCognome()+"', '"+utente.getPassword()+"', '"+otp+"', '"+date_time+"')";
+//		 stmt.executeUpdate(sql);
 	 }
 	 
 	 
@@ -87,11 +120,14 @@ public class DbRegisterLogin extends Database {
 		
 		 Argon2 argon2 = Argon2Factory.create();
 		 String now = dateTime();
-		 Connection conn = getConn();
-		 Statement stmt = conn.createStatement();
+		 //Statement stmt = conn.createStatement();
 		 
-		 String query = "SELECT "+tempUtentiTable+".email_utente as email, nome, cognome, password, otp, expire_at FROM "+tempUtentiTable+" WHERE email_utente = '"+utente.getEmail()+"'";
-		 ResultSet rs = stmt.executeQuery(query);
+		// QueryManager.SELECT_USER_STM.setString(1,tempUtentiTable);
+		 QueryManager.SELECT_TEMP_USER_STM.setString(1,utente.getEmail());
+		 
+		// String query = "SELECT "+tempUtentiTable+".email_utente as email, nome, cognome, password, otp, expire_at FROM "+tempUtentiTable+" WHERE email_utente = '"+utente.getEmail()+"'";
+		
+		 ResultSet rs = QueryManager.SELECT_TEMP_USER_STM.executeQuery();
 		 
 		 User copyUtente = null;
 		 
@@ -101,7 +137,7 @@ public class DbRegisterLogin extends Database {
 				 
 				 // if the user with the otp has found then ...
 				 
-				 copyUtente = new User(rs.getString("email"), rs.getString("nome"), rs.getString("cognome"), rs.getString("password"));
+				 copyUtente = new User(rs.getString("email"), rs.getString("nome"), rs.getString("cognome"), rs.getString("password"), rs.getString("sesso"), rs.getString("data_nascita"));
 				 insertUtente(copyUtente);
 				 break;
 				 
@@ -156,5 +192,3 @@ public class DbRegisterLogin extends Database {
 		 return false;
 	 }
 }
-
-

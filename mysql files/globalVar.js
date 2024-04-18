@@ -1,6 +1,6 @@
-const homePage = "http://playsphere.ddns.net/home/homepage.html";
-const loginPage = "http://playsphere.ddns.net/login/login.html";
-const registrationPage = "http://playsphere.ddns.net/reg/registrazione.html";
+const homePage = "http://192.168.1.115:5500/homepage.html";
+const loginPage = "http://192.168.1.115:5500/login.html";
+const registrationPage = "http://192.168.1.115:5500/index.html";
 
-const sessionInfoServlet = "http://playsphere.ddns.net:8080/DilaxiaTornei/Sessioninfo";
-const registerServlet = "http://playsphere.ddns.net:8080/DilaxiaTornei/Register";
+const sessionInfoServlet = "http://192.168.1.115:8080/DilaxiaTornei/Sessioninfo";
+const registerServlet = "http://192.168.1.115:8080/DilaxiaTornei/Register";

@@ -2,18 +2,18 @@ package sessions;
 
 public class Redirections {
 
-	private final String HOME_PAGE = "http://playsphere.ddns.net/home/homepage.html";
-	private final String LOGIN_PAGE = "http://playsphere.ddns.net/login/login.html";
-	private final String TO_CONFIRM_PAGE = "http://playsphere.ddns.net/email_di_conferma/toconfirm.html";
-	private final String REGISTRATION_PAGE = "http://playsphere.ddns.net/reg/registrazione.html";
-	private final String CONFIRMATION_PAGE = "http://playsphere.ddns.net/email_di_conferma/confirm.html";
+	private final String HOME_PAGE = "http://192.168.1.115:5500/homepage.html";
+	private final String LOGIN_PAGE = "http://192.168.1.115:5500/login.html";
+	private final String TO_CONFIRM_PAGE = "http://192.168.1.115:5500/toconfirm.html";
+	private final String REGISTRATION_PAGE = "http://192.168.1.115:5500/index.html";
+	private final String CONFIRMATION_PAGE = "http://192.168.1.115:5500/confirm.html";
 	
-	private final String SESSION_INFO_SERVLET = "http://playsphere.ddns.net:8080/DilaxiaTornei/Sessioninfo";
-	private final String CONFIRM_REGISTRATION_SERVLET = "http://playsphere.ddns.net:8080/DilaxiaTornei/ConfirmRegistration";
-	private final String LOGIN_SERVLET = "http://playsphere.ddns.net:8080/DilaxiaTornei/Login";
+	private final String SESSION_INFO_SERVLET = "http://192.168.1.115:8080/DilaxiaTornei/Sessioninfo";
+	private final String CONFIRM_REGISTRATION_SERVLET = "http://192.168.1.115:8080/DilaxiaTornei/ConfirmRegistration";
+	private final String LOGIN_SERVLET = "http://192.168.1.115:8080/DilaxiaTornei/Login";
 	
 	
-	private final String CORS_ALLOWED = "http://playsphere.ddns.net";
+	private final String CORS_ALLOWED = "http://192.168.1.115:5500";
 
 
 	public String getHOME_PAGE() {

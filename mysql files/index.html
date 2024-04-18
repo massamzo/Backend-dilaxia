@@ -1,7 +1,9 @@
 <html>
     <head>
         <title>example</title>
+		<script type="text/javascript" src="./globalVar.js"></script>
         <script>
+	
             document.addEventListener("DOMContentLoaded", ()=>{
                 var sessionCookie = document.cookie.split(";");
 				var sessionIdcreated = false;
@@ -28,14 +30,14 @@
 						
 
 						if(jsonResponse['nome'] != 'null' || jsonResponse['nome'] != null){
-							window.location.replace("http://192.168.1.115:5500/homepage.html");
+							window.location.replace(homePage);
 						}
 						}
 					};
 
 					
 
-					xhttp.open("GET", "http://192.168.1.115:8080/DilaxiaTornei/Sessioninfo?sessionID="+sessionID, true);
+					xhttp.open("GET", sessionInfoServlet+"?sessionID="+sessionID, true);
 					xhttp.send();
                 }
             });
@@ -47,6 +49,12 @@
             <input type="text" name="nome" placeholder="nome">
             <input type="text" name="cognome" placeholder="cognome">
             <input type="text" name="password" placeholder="password">
+
+			<input type="radio" name="sesso" value="m">M
+			<input type="radio" name="sesso" value="f">F
+
+			<br>
+			<input type="date" name="ddn">
             <input type="submit">
         </form>
     </body>

@@ -14,7 +14,10 @@ public class Database {
 	
 	public String utentiTable = "utenti";
 	public String tempUtentiTable = "temp_utenti";
-	public String accountTable = "account";
+	public String torneiTable = "tornei";
+	public String sportsTable = "sports";
+	public String partecipazioniTable = "partecipazioni";
+	
 	
 	private Connection conn = null;
 	BasicDataSource mysqldb = null;

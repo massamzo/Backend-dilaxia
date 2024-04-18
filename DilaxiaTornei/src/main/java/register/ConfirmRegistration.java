@@ -43,8 +43,15 @@ public class ConfirmRegistration extends HttpServlet {
 			
 			// conferma la registrazione 
 			
-			DbRegisterLogin database = new DbRegisterLogin();
-			User utente = new User(email,"");
+			DbRegisterLogin database = null;
+			User utente = null;
+			try {
+				database = new DbRegisterLogin();
+				utente = new User(email,"");
+			} catch (SQLException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
 			
 			try {
 				if(utente.userExists()) {
@@ -57,6 +64,7 @@ public class ConfirmRegistration extends HttpServlet {
 				}else {
 					
 					// andiamo a registrare il user
+					
 					
 					database.confirmRegistration(utente, otp);
 					

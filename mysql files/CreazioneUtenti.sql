@@ -1,3 +1,39 @@
+-- DROP DATABASE IF EXISTS playsphere;
+-- CREATE DATABASE playsphere;
+
+-- USE playsphere;
+
+-- CREATE TABLE utenti(
+--     email_utente VARCHAR(100) PRIMARY KEY NOT NULL,
+--     nome VARCHAR(50) NOT NULL,
+--     cognome VARCHAR(50) NOT NULL,
+--     password VARCHAR(300) NOT NULL,
+--     data_creazione DATETIME NOT NULL
+-- );
+
+-- CREATE TABLE temp_utenti(
+
+--     email_utente VARCHAR(100) NOT NULL,
+--     nome VARCHAR(50) NOT NULL,
+--     cognome VARCHAR(50) NOT NULL,
+--     password VARCHAR(300) NOT NULL,
+--     otp VARCHAR(300) NOT NULL,
+--     expire_at DATETIME NOT NULL,
+--     PRIMARY KEY(email_utente,otp)
+
+-- );
+
+-- CREATE TABLE account(
+--     email_utente VARCHAR(100) PRIMARY KEY NOT NULL,
+--     password VARCHAR(300) NOT NULL,
+--     data_creazione DATETIME NOT NULL,
+
+--     FOREIGN KEY(email_utente) REFERENCES utenti(email_utente)
+--         ON DELETE CASCADE
+-- );
+
+
+
 DROP DATABASE IF EXISTS playsphere;
 CREATE DATABASE playsphere;
 
@@ -9,8 +45,9 @@ CREATE TABLE utenti(
     cognome VARCHAR(50) NOT NULL,
     password VARCHAR(300) NOT NULL,
     data_nascita DATETIME NOT NULL,
-    sesso char(1) NOT NULL,
-    data_creazione DATETIME NOT NULL
+    sesso CHAR(1) NOT NULL,
+    data_creazione DATETIME NOT NULL,
+    privilegi_flg CHAR(1) NOT NULL
 );
 
 CREATE TABLE temp_utenti(
@@ -21,29 +58,29 @@ CREATE TABLE temp_utenti(
     data_nascita DATETIME NOT NULL,
     sesso char(1) NOT NULL,
     otp VARCHAR(300) NOT NULL,
+    privilegi_flg CHAR(1) NOT NULL,
     expire_at DATETIME NOT NULL,
     PRIMARY KEY(email_utente,otp)
 );
 
 CREATE TABLE sports(
-    id_sport PRIMARY KEY INT NOT NULL AUTO_INCREMENT,
-    nome VARCHAR(30) NOT NULL
+    nome VARCHAR(30) PRIMARY KEY NOT NULL
 );
 
 INSERT INTO sports VALUES
-    (null, "Calcio"),
-    (null, "Basket"),
-    (null, "Pallavolo"),
-    (null, "Golf"),
-    (null, "Tennis"),
-    (null, "Corsa"),
-    (null, "Fresbee"),
-    (null, "Hockey"),
-    (null, "Scherma"),
-    (null, "Rugby"),
-    (null, "Padel"),
-    (null, "Baseball"),
-    (null, "Dodgeball");
+    ("Calcio"),
+    ("Basket"),
+    ("Pallavolo"),
+    ("Golf"),
+    ("Tennis"),
+    ("Corsa"),
+    ("Fresbee"),
+    ("Hockey"),
+    ("Scherma"),
+    ("Rugby"),
+    ("Padel"),
+    ("Baseball"),
+    ("Dodgeball");
 
 CREATE TABLE tornei(
     nome_torneo VARCHAR(100) NOT NULL,
@@ -53,11 +90,11 @@ CREATE TABLE tornei(
     min_partecipanti SMALLINT DEFAULT 0,
     max_partecipanti SMALLINT,
     is_interno BOOLEAN NOT NULL,
-    email_organizzatore VARCHAR(100) NOT NULL,
+    email_organizzatore VARCHAR(100),
     sport VARCHAR(30),
     PRIMARY KEY(nome_torneo,data_torneo),
     FOREIGN KEY (email_organizzatore) REFERENCES utenti(email_utente) ON DELETE SET NULL,
-    FOREIGN KEY (sport) REFERENCES sport(nome) ON UPDATE CASCADE ON DELETE SET NULL
+    FOREIGN KEY (sport) REFERENCES sports(nome) ON UPDATE CASCADE ON DELETE SET NULL
 );
 
 CREATE TABLE partecipazioni (

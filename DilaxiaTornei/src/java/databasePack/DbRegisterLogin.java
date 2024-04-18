@@ -12,15 +12,15 @@ import java.time.format.DateTimeFormatter; // Import the DateTimeFormatter class
 
 
 public class DbRegisterLogin extends Database {
+	private Connection conn = null;
 	
 	public DbRegisterLogin() {
 		super();
-		
+		conn = getConn();
 	}
 	
 	 private void insertUtente(User utente) throws SQLException {
 		 String now = dateTime();
-		 Connection conn = getConn();
 		 Statement stmt = conn.createStatement();
 		 String sql = "INSERT INTO "+utentiTable+"(email_utente, nome, cognome, password,data_creazione) VALUES('"+utente.getEmail()+"', '"+utente.getNome()+"', '"+utente.getCognome()+"', '"+utente.getPassword()+"', '"+now+"')";
 		 stmt.executeUpdate(sql);
@@ -42,7 +42,6 @@ public class DbRegisterLogin extends Database {
 	 
 	 private void insertTempUtente(User utente, String otp) throws SQLException {
 		 String date_time = dateTime();
-		 Connection conn = getConn();
 		 Statement stmt = conn.createStatement();		 
 		 String sql = "INSERT INTO "+tempUtentiTable+"(email_utente, nome, cognome, password, otp, expire_at) VALUES('"+utente.getEmail()+"', '"+utente.getNome()+"', '"+utente.getCognome()+"', '"+utente.getPassword()+"', '"+otp+"', '"+date_time+"')";
 		 stmt.executeUpdate(sql);
@@ -87,7 +86,6 @@ public class DbRegisterLogin extends Database {
 		
 		 Argon2 argon2 = Argon2Factory.create();
 		 String now = dateTime();
-		 Connection conn = getConn();
 		 Statement stmt = conn.createStatement();
 		 
 		 String query = "SELECT "+tempUtentiTable+".email_utente as email, nome, cognome, password, otp, expire_at FROM "+tempUtentiTable+" WHERE email_utente = '"+utente.getEmail()+"'";

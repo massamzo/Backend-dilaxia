@@ -45,7 +45,7 @@ public class DbRegisterLogin extends Database {
 	 }
 	 
 	 
-	 private String dateTime(){
+	 public static String dateTime(){
 		 
 		LocalDateTime myDateObj = LocalDateTime.now();
 	    DateTimeFormatter myFormatObj = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");

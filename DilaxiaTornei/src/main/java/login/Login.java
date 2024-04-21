@@ -123,7 +123,7 @@ public class Login extends HttpServlet {
 					
 				}else {
 					String error="Username o password sbagliata ";
-					response.sendRedirect(redirect.getREGISTRATION_PAGE()+"?error="+error);
+					response.sendRedirect(redirect.getLOGIN_PAGE()+"?error="+error);
 				}
 				
 				

@@ -104,4 +104,14 @@ CREATE TABLE partecipazioni (
     PRIMARY KEY(email_partecipante, nome_torneo, data_torneo),
     FOREIGN KEY (email_partecipante) REFERENCES utenti(email_utente) ON DELETE CASCADE,
     FOREIGN KEY (nome_torneo, data_torneo) REFERENCES tornei(nome_torneo, data_torneo) ON UPDATE CASCADE ON DELETE CASCADE
-)
+);
+
+CREATE TABLE temp_pass_recover(
+    email_utente VARCHAR(100) DEFAULT "nd",
+    passkey VARCHAR(300) not NULL,
+    expire_at DATETIME NOT NULL,
+    PRIMARY KEY (email_utente, passkey),
+    FOREIGN KEY (email_utente) REFERENCES utenti(email_utente) on DELETE set DEFAULT
+
+);
+

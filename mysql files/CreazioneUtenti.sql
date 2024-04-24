@@ -115,3 +115,15 @@ CREATE TABLE temp_pass_recover(
 
 );
 
+CREATE TABLE privilegi(
+    id_privilegio TINYINT PRIMARY KEY NOT NULL AUTO_INCREMENT,
+    utente CHAR(1) NOT NULL,
+    evento VARCHAR(20) NOT NULL
+);
+
+INSERT INTO privilegi VALUES
+    ("e", "Crea esterno"),
+    ("p", "Crea esterno"),
+    ("p", "Crea interno"),
+    ("s", "Crea esterno");
+

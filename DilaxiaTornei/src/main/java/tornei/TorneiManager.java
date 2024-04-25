@@ -185,6 +185,8 @@ public class TorneiManager extends HttpServlet {
 				torneo.update();
 				response.getWriter().append("true");
 				
+				//manda la mail
+				
 			} catch (SQLException e) {
 				// TODO Auto-generated catch block
 				String error = e.getMessage();

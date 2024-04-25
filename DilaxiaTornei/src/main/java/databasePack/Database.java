@@ -47,5 +47,9 @@ public class Database {
 	 public Connection getConn() {
 		 return conn;
 	 }
+	 
+	 public void closeConnection() throws SQLException {
+		 conn.close();
+	 }
 
 }

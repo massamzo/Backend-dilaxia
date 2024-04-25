@@ -14,17 +14,27 @@ public class Mailer {
 	private static final String port = "587";
 	//moxiphjaatlajrrh
 	
-	private static final String subject = "PlaySphere mail confirmation";
+	private static String subject = "PlaySphere mail confirmation";
 	
 	private String reciever;
-	private String text;
+	private String registrationConfirmText;
+	private String resetPassText;
 	
 	
 	
 	public Mailer(String reciever, String username, String confirmationLink) {
 		
 		this.reciever = reciever;
-		this.text = "Benvenuto "+username+"!\nsiamo felici di averti con noi, per proseguire con la registrazione sul link qui sotto:\n "+confirmationLink;
+		this.registrationConfirmText = "Benvenuto "+username+"!\nsiamo felici di averti con noi, per proseguire con la registrazione sul link qui sotto:\n "+confirmationLink;
+		this.resetPassText = "Ciao, \nclicca sul link sotto per resettare la password :\n\n"+confirmationLink;
+	}
+	
+	public Mailer(String reciever, String confirmationLink, boolean isResetPass) {
+		this.reciever = reciever;
+		if(isResetPass) {
+			this.registrationConfirmText = this.resetPassText = "Ciao, \nclicca sul link sotto per resettare la password :\n\n"+confirmationLink;
+			this.subject = "Playsphere reset Password";
+		}
 	}
 	
 	public boolean send() {
@@ -50,7 +60,7 @@ public class Mailer {
 	    	message.setFrom(new InternetAddress(Mailer.sender));
 	    	message.setRecipient(Message.RecipientType.TO, new InternetAddress(this.reciever));
 	    	message.setSubject(subject);
-	    	message.setText(text);
+	    	message.setText(registrationConfirmText);
 	    	Transport.send(message);
 	    	
 	    	return true;

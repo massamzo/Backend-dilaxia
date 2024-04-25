@@ -225,6 +225,18 @@ public class User extends Database{
 		
 	}
 	
+	public User getUserFromdb() throws SQLException {
+		
+		QueryManager.SELECT_USER_STM.setString(1, this.email);
+		ResultSet rs = QueryManager.SELECT_USER_STM.executeQuery();
+		
+		if(rs.next()) {
+			return new User(rs.getString("email"), rs.getString("nome"), rs.getString("cognome"), rs.getString("password"), rs.getString("sesso"), rs.getString("data_nascita"));
+		}
+		
+		throw new SQLException();
+	}
+	
 	
 	
 }

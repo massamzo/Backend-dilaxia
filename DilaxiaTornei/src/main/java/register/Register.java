@@ -112,6 +112,8 @@ public class Register extends HttpServlet {
 			
 			User utente = null;
 			
+			email = email.toLowerCase();
+			
 			try {
 				utente = new User(email, nome, cognome, password,sesso, ddn);
 			} catch (SQLException e) {

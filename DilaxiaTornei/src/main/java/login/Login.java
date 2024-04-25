@@ -80,6 +80,8 @@ public class Login extends HttpServlet {
 			String email = request.getParameter("email");
 			String password = request.getParameter("password");
 			
+			email = email.toLowerCase();
+			
 			User utente = null;
 			DbRegisterLogin database = null;
 			try {
@@ -123,7 +125,7 @@ public class Login extends HttpServlet {
 					
 				}else {
 					String error="Username o password sbagliata ";
-					response.sendRedirect(redirect.getREGISTRATION_PAGE()+"?error="+error);
+					response.sendRedirect(redirect.getLOGIN_PAGE()+"?error="+error);
 				}
 				
 				

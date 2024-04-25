@@ -7,7 +7,14 @@ public class Redirections {
 	private final String TO_CONFIRM_PAGE = "http://192.168.1.115:5500/toconfirm.html";
 	private final String REGISTRATION_PAGE = "http://192.168.1.115:5500/index.html";
 	private final String CONFIRMATION_PAGE = "http://192.168.1.115:5500/confirm.html";
+	private final String RECUPERO_PASS_PAGE = "http://192.168.1.115:5500/passwordRecover.html";
+	private final String RESET_PASSW_PAGE = "http://192.168.1.115:5500/resetPassword.html";
 	
+	public String getRESET_PASSW_PAGE() {
+		return RESET_PASSW_PAGE;
+	}
+
+
 	private final String SESSION_INFO_SERVLET = "http://192.168.1.115:8080/DilaxiaTornei/Sessioninfo";
 	private final String CONFIRM_REGISTRATION_SERVLET = "http://192.168.1.115:8080/DilaxiaTornei/ConfirmRegistration";
 	private final String LOGIN_SERVLET = "http://192.168.1.115:8080/DilaxiaTornei/Login";
@@ -53,6 +60,11 @@ public class Redirections {
 
 	public String getLOGIN_SERVLET() {
 		return LOGIN_SERVLET;
+	}
+
+
+	public String getRECUPERO_PASS_PAGE() {
+		return RECUPERO_PASS_PAGE;
 	}
 
 

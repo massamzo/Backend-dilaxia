@@ -2,13 +2,13 @@ package sessions;
 
 public class Redirections {
 
-	private final String HOME_PAGE = "http://192.168.1.115:5500/homepage.html";
-	private final String LOGIN_PAGE = "http://192.168.1.115:5500/login.html";
-	private final String TO_CONFIRM_PAGE = "http://192.168.1.115:5500/toconfirm.html";
-	private final String REGISTRATION_PAGE = "http://192.168.1.115:5500/index.html";
-	private final String CONFIRMATION_PAGE = "http://192.168.1.115:5500/confirm.html";
-	private final String RECUPERO_PASS_PAGE = "http://192.168.1.115:5500/passwordRecover.html";
-	private final String RESET_PASSW_PAGE = "http://192.168.1.115:5500/resetPassword.html";
+	private final String HOME_PAGE = "http://192.168.1.115:5500/home/index.html";
+	private final String LOGIN_PAGE = "http://192.168.1.115:5500/login/index.html";
+	private final String TO_CONFIRM_PAGE = "http://192.168.1.115:5500/email_di_conferma/index.html";
+	private final String REGISTRATION_PAGE = "http://192.168.1.115:5500/reg/index.html";
+	private final String CONFIRMATION_PAGE = "http://192.168.1.115:5500/email_di_conferma/index.html";
+	private final String RECUPERO_PASS_PAGE = "http://192.168.1.115:5500/recupero_password/recupero_password.html";
+	private final String RESET_PASSW_PAGE = "http://192.168.1.115:5500/recupero_password/reset_password.html";
 	
 	public String getRESET_PASSW_PAGE() {
 		return RESET_PASSW_PAGE;

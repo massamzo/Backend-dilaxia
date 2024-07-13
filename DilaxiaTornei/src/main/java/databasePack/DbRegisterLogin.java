@@ -29,6 +29,15 @@ public class DbRegisterLogin extends Database {
 		 
 		// QueryManager.INSERT_USER_STM.setString(1,utentiTable);
 		 
+		 try {
+				conn = mysqldb.getConnection();
+				qm = new QueryManager(conn);
+			} catch (SQLException e) {
+				// TODO Auto-generated catch block
+				System.out.println("ERROR WHILE CONNECTING TO DATABASE");
+				e.printStackTrace();
+			}
+		 
 		 QueryManager.INSERT_USER_STM.setString(1,utente.getEmail());
 		 QueryManager.INSERT_USER_STM.setString(2,utente.getNome());
 		 QueryManager.INSERT_USER_STM.setString(3,utente.getCognome());
@@ -43,7 +52,9 @@ public class DbRegisterLogin extends Database {
 //		 Statement stmt = conn.createStatement();
 //		 String sql = "INSERT INTO "+utentiTable+"(email_utente, nome, cognome, password,data_creazione) VALUES('"+utente.getEmail()+"', '"+utente.getNome()+"', '"+utente.getCognome()+"', '"+utente.getPassword()+"', '"+now+"')";
 //		 stmt.executeUpdate(sql);
-	 }
+		 
+		 conn.close();
+}
 	 
 	 
 	 public static String dateTime(){
@@ -60,6 +71,17 @@ public class DbRegisterLogin extends Database {
 
 	 
 	 private void insertTempUtente(User utente, String otp) throws SQLException {
+		 
+		 try {
+				conn = mysqldb.getConnection();
+				qm = new QueryManager(conn);
+			} catch (SQLException e) {
+				// TODO Auto-generated catch block
+				System.out.println("ERROR WHILE CONNECTING TO DATABASE");
+				e.printStackTrace();
+			}
+		 
+		 
 		 String date_time = dateTime();
 		 
 		 //QueryManager.INSERT_TEMP_USER_STM.setString(1,tempUtentiTable);
@@ -80,11 +102,14 @@ public class DbRegisterLogin extends Database {
 //		 Statement stmt = conn.createStatement();		 
 //		 String sql = "INSERT INTO "+tempUtentiTable+"(email_utente, nome, cognome, password, otp, expire_at) VALUES('"+utente.getEmail()+"', '"+utente.getNome()+"', '"+utente.getCognome()+"', '"+utente.getPassword()+"', '"+otp+"', '"+date_time+"')";
 //		 stmt.executeUpdate(sql);
+		 
+		 
+		 conn.close();
 	 }
 	 
 	 
 	 
-	public boolean createTempAccount(User utente, String otp) {
+	public boolean createTempAccount(User utente, String otp) throws SQLException {
 		
 		Argon2 argon2 = Argon2Factory.create();
 		 
@@ -106,6 +131,7 @@ public class DbRegisterLogin extends Database {
 			 
 		}catch(Exception e) {
 			System.out.println("Error");
+			 conn.close();
 			e.printStackTrace();
 		}
 		
@@ -118,6 +144,16 @@ public class DbRegisterLogin extends Database {
 	
 	public void confirmRegistration(User utente, String otp) throws SQLException {
 		
+		
+		 try {
+				conn = mysqldb.getConnection();
+				qm = new QueryManager(conn);
+			} catch (SQLException e) {
+				// TODO Auto-generated catch block
+				System.out.println("ERROR WHILE CONNECTING TO DATABASE");
+				e.printStackTrace();
+			}
+		 
 		
 		 Argon2 argon2 = Argon2Factory.create();
 		 String now = dateTime();
@@ -147,6 +183,7 @@ public class DbRegisterLogin extends Database {
 		 }
 		 
 		 if(copyUtente == null) {
+			 conn.close();
 			 throw new SQLException();
 		 }
 		 
@@ -164,6 +201,8 @@ public class DbRegisterLogin extends Database {
 //			throw new SQLException();
 //		 }
 		
+		 
+		 conn.close();
 	}
 	
 	
@@ -197,12 +236,26 @@ public class DbRegisterLogin extends Database {
 	 
 	 public ArrayList<String> getSports() throws SQLException{
 		 
+		 try {
+				conn = mysqldb.getConnection();
+				qm = new QueryManager(conn);
+			} catch (SQLException e) {
+				// TODO Auto-generated catch block
+				System.out.println("ERROR WHILE CONNECTING TO DATABASE");
+				e.printStackTrace();
+			}
+		 
+		 
 		 ResultSet rs = QueryManager.SELECT_SPORTS_STM.executeQuery();
 		 ArrayList<String> sports = new ArrayList<>();
 		 while(rs.next()) {
 			 sports.add(rs.getString("nome"));
 		 }
 		 
+		 conn.close();
+		 
 		 return sports;
+		 
+		 
 	 }
 }

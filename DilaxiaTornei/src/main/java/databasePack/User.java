@@ -161,6 +161,16 @@ public class User extends Database{
 
 	public boolean userExists() throws SQLException {
 		
+		 
+		 try {
+				conn = mysqldb.getConnection();
+				qm = new QueryManager(conn);
+			} catch (SQLException e) {
+				// TODO Auto-generated catch block
+				System.out.println("ERROR WHILE CONNECTING TO DATABASE");
+				e.printStackTrace();
+			}
+		
 //		 Connection conn = getConn();
 		
 		 
@@ -175,10 +185,11 @@ public class User extends Database{
 		 
 		 if(rs.next()) {
 			 if(this.email.equals(rs.getString("email"))) {
+				 conn.close();
 				 return true;
 			 }
 		 }
-		 
+		 conn.close();
 		 return false;
 		
 	}
@@ -187,7 +198,15 @@ public class User extends Database{
 	
 	public User userWithCryptedPass() throws SQLException {
 		
-		
+		 
+		 try {
+				conn = mysqldb.getConnection();
+				qm = new QueryManager(conn);
+			} catch (SQLException e) {
+				// TODO Auto-generated catch block
+				System.out.println("ERROR WHILE CONNECTING TO DATABASE");
+				e.printStackTrace();
+			}
 		
 //		 Connection conn = getConn();
 		
@@ -203,10 +222,11 @@ public class User extends Database{
 		 if(rs.next()) {
 			 newuser = new User(rs.getString("email"), rs.getString("nome"), rs.getString("cognome"), rs.getString("password"), rs.getString("sesso"), rs.getString("data_nascita"));
 			 newuser.setDataCreazione(rs.getString("data_creazione"));
+			 conn.close();
 			 return newuser;
 		 }
 		 
-		 
+		 conn.close();
 		 return newuser;
 		
 	}
@@ -254,18 +274,40 @@ public class User extends Database{
 	
 	public User getUserFromdb() throws SQLException {
 		
+		 
+		 try {
+				conn = mysqldb.getConnection();
+				qm = new QueryManager(conn);
+			} catch (SQLException e) {
+				// TODO Auto-generated catch block
+				System.out.println("ERROR WHILE CONNECTING TO DATABASE");
+				e.printStackTrace();
+			}
+		
 		QueryManager.SELECT_USER_STM.setString(1, this.email);
 		ResultSet rs = QueryManager.SELECT_USER_STM.executeQuery();
 		
 		if(rs.next()) {
+			
+			
 			return new User(rs.getString("email"), rs.getString("nome"), rs.getString("cognome"), rs.getString("password"), rs.getString("sesso"), rs.getString("data_nascita"));
 		}
-		
+		conn.close();
 		throw new SQLException();
 	}
 	
 	
 	public ArrayList<String> getEventiConcessi() throws SQLException{
+		
+		 
+		 try {
+				conn = mysqldb.getConnection();
+				qm = new QueryManager(conn);
+			} catch (SQLException e) {
+				// TODO Auto-generated catch block
+				System.out.println("ERROR WHILE CONNECTING TO DATABASE");
+				e.printStackTrace();
+			}
 		
 		QueryManager.SELECT_EVENTI_CONCESSI_STM.setString(1, this.flag);
 		
@@ -279,11 +321,23 @@ public class User extends Database{
 			
 		}
 		
+		conn.close();
+		
 		return eventi;
 	}
 	
 	
 	public ArrayList<String> getUserList(boolean isTorneoInterno, String input) throws SQLException{
+		
+		 
+		 try {
+				conn = mysqldb.getConnection();
+				qm = new QueryManager(conn);
+			} catch (SQLException e) {
+				// TODO Auto-generated catch block
+				System.out.println("ERROR WHILE CONNECTING TO DATABASE");
+				e.printStackTrace();
+			}
 		
 		// preparing the types of people i can invite
 		
@@ -320,6 +374,8 @@ public class User extends Database{
 			people.add(rs.getString("email_utente"));
 		}
 		
+		
+		conn.close();
 		
 		return people;
 		

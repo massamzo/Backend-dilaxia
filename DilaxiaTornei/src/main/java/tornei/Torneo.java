@@ -292,6 +292,16 @@ public class Torneo extends Database{
 	
 	public void createTorneo() throws Exception {
 		
+		 
+		 try {
+				conn = mysqldb.getConnection();
+				qm = new QueryManager(conn);
+			} catch (SQLException e) {
+				// TODO Auto-generated catch block
+				System.out.println("ERROR WHILE CONNECTING TO DATABASE");
+				e.printStackTrace();
+			}
+		
 		User userfromDB = getUserKnowingID();
 		boolean canCreate = true;
 		
@@ -309,6 +319,7 @@ public class Torneo extends Database{
 		ResultSet rs = QueryManager.SELECT_TORNEO_BY_DATE_STM.executeQuery();
 		
 		if(rs.next()) {
+			conn.close();
 			throw new SQLException("torneo esiste per quella data");
 		}
 		
@@ -331,12 +342,22 @@ public class Torneo extends Database{
 		QueryManager.INSERT_TORNEO_STM.executeUpdate();
 		
 		
-		
+		conn.close();
 		
 	}
 	
 	
 	public void delete() throws Exception {
+		
+		 
+		 try {
+				conn = mysqldb.getConnection();
+				qm = new QueryManager(conn);
+			} catch (SQLException e) {
+				// TODO Auto-generated catch block
+				System.out.println("ERROR WHILE CONNECTING TO DATABASE");
+				e.printStackTrace();
+			}
 		
 		User userfromDB = getUserKnowingID();
 		
@@ -356,12 +377,14 @@ public class Torneo extends Database{
 				
 				QueryManager.DELETE_TORNEO_STM.executeUpdate();
 			}else {
+				
+				conn.close();
 				throw new SQLException("non puoi eliminare questo torneo");
 			}
 		}
 		
 		
-		
+		conn.close();
 	}
 	
 	
@@ -379,7 +402,17 @@ public class Torneo extends Database{
 	
 	
 	public void update() throws Exception {
-		
+		 
+		 try {
+				conn = mysqldb.getConnection();
+				qm = new QueryManager(conn);
+			} catch (SQLException e) {
+				// TODO Auto-generated catch block
+				System.out.println("ERROR WHILE CONNECTING TO DATABASE");
+				e.printStackTrace();
+			}
+		 
+		 
 		User userfromDB = getUserKnowingID();
 		
 		QueryManager.SELECT_TORNEO_STM.setString(1, this.nome_evento);
@@ -402,15 +435,29 @@ public class Torneo extends Database{
 				QueryManager.UPDATE_TORNEO_STM.executeUpdate();
 				
 			}else {
+				conn.close();
 				throw new SQLException("modifica non effettuata");
 			}
 		}else {
+			conn.close();
 			throw new SQLException("modifica non effettuata");
 		}
+		
+		conn.close();
 	}
 	
 	
 	public Torneo getTorneo() throws SQLException {
+		
+		 
+		 try {
+				conn = mysqldb.getConnection();
+				qm = new QueryManager(conn);
+			} catch (SQLException e) {
+				// TODO Auto-generated catch block
+				System.out.println("ERROR WHILE CONNECTING TO DATABASE");
+				e.printStackTrace();
+			}
 		
 		QueryManager.SELECT_TORNEO_STM.setString(1, this.nome_evento);
 		QueryManager.SELECT_TORNEO_STM.setString(2, this.dateTime);
@@ -437,6 +484,7 @@ public class Torneo extends Database{
 			return new Torneo("", datadb, rs.getString("nome_torneo"), ora, rs.getString("descrizione"), rs.getString("max_partecipanti"), rs.getString("eta_minima"), rs.getString("sport"), creaTipo, rs.getString("email_organizzatore"), rs.getString("lon"), rs.getString("lat"));
 		}
 		
+		conn.close();
 		throw new SQLException("torneo non trovato");
 		
 	}
@@ -445,15 +493,27 @@ public class Torneo extends Database{
 	
 	public int getPartecipantiNum() throws Exception {
 		
+		 
+		 try {
+				conn = mysqldb.getConnection();
+				qm = new QueryManager(conn);
+			} catch (SQLException e) {
+				// TODO Auto-generated catch block
+				System.out.println("ERROR WHILE CONNECTING TO DATABASE");
+				e.printStackTrace();
+			}
+		
 		QueryManager.COUNT_PARTECIPAZIONI_STM.setString(1, this.nome_evento);
 		QueryManager.COUNT_PARTECIPAZIONI_STM.setString(2, this.dateTime);
 		
 		ResultSet rs = QueryManager.COUNT_PARTECIPAZIONI_STM.executeQuery();
 		
 		if(rs.next()) {
+			
 			return Integer.parseInt(rs.getString("num_iscritti"));
 		}
 		
+		conn.close();
 		return 0;
 	}
 	
@@ -462,6 +522,15 @@ public class Torneo extends Database{
 	public void iscriviAlTorneo(String email, String ddn) throws Exception {
 		
 		// calculate the age
+		 
+		 try {
+				conn = mysqldb.getConnection();
+				qm = new QueryManager(conn);
+			} catch (SQLException e) {
+				// TODO Auto-generated catch block
+				System.out.println("ERROR WHILE CONNECTING TO DATABASE");
+				e.printStackTrace();
+			}
 		
 		LocalDate dob = LocalDate.parse(ddn);
         
@@ -482,31 +551,53 @@ public class Torneo extends Database{
 			QueryManager.INSERT_PARTECIPAZIONE_STM.executeUpdate();
 		}else if(age < this.eta_minima){
 			
+			conn.close();
 			throw new Exception("hai un eta minore");
 			
 		}else {
-			
+			conn.close();
 			throw new Exception("torneo pieno");
 		}
 		
-		
+		conn.close();
 	}
 	
 	
 	
 	
 	public void abbandonaTorneo(String email) throws SQLException {
+		 
+		 try {
+				conn = mysqldb.getConnection();
+				qm = new QueryManager(conn);
+			} catch (SQLException e) {
+				// TODO Auto-generated catch block
+				System.out.println("ERROR WHILE CONNECTING TO DATABASE");
+				e.printStackTrace();
+			}
 		
 		QueryManager.DELETE_PARTECIPAZIONE_STM.setString(1, email);
 		QueryManager.DELETE_PARTECIPAZIONE_STM.setString(2, this.nome_evento);
 		QueryManager.DELETE_PARTECIPAZIONE_STM.setString(3, this.dateTime);
 		
 		QueryManager.DELETE_PARTECIPAZIONE_STM.executeUpdate();
+		
+		conn.close();
 	}
 	
 	
 	
 	private String getTorneoPerMeseEsterno(String mese, String anno, String email) throws SQLException {
+		
+		 
+		 try {
+				conn = mysqldb.getConnection();
+				qm = new QueryManager(conn);
+			} catch (SQLException e) {
+				// TODO Auto-generated catch block
+				System.out.println("ERROR WHILE CONNECTING TO DATABASE");
+				e.printStackTrace();
+			}
 
 		QueryManager.SELECT_SPECIFIC_TORNEO_MESE_STM.setString(1,mese);
 		QueryManager.SELECT_SPECIFIC_TORNEO_MESE_STM.setString(2,anno);
@@ -528,6 +619,14 @@ public class Torneo extends Database{
 			singleArray.add(date);
 			
 			// enter the 1 = partecipa in quella data a qualche torneo, 0 = non pasrtecipa
+			try {
+				conn = mysqldb.getConnection();
+				qm = new QueryManager(conn);
+			} catch (SQLException e) {
+				// TODO Auto-generated catch block
+				System.out.println("ERROR WHILE CONNECTING TO DATABASE");
+				e.printStackTrace();
+			}
 			
 			QueryManager.SELECT_PARTECIPAZIONI_STM.setString(1, email);
 			QueryManager.SELECT_PARTECIPAZIONI_STM.setString(2, date);
@@ -546,11 +645,22 @@ public class Torneo extends Database{
 		String datesArray = new Gson().toJson(dates);
 		jsonObject.addProperty("dates", datesArray);
 		
+		conn.close();
 		return new Gson().toJson(jsonObject);
 	}
 	
 	
 	private String getAllTorneoPerMese(String mese, String anno, String email) throws SQLException {
+		
+		 
+		 try {
+				conn = mysqldb.getConnection();
+				qm = new QueryManager(conn);
+			} catch (SQLException e) {
+				// TODO Auto-generated catch block
+				System.out.println("ERROR WHILE CONNECTING TO DATABASE");
+				e.printStackTrace();
+			}
 		
 		QueryManager.SELECT_ALL_TORNEO_MESE_STM.setString(1,mese);
 		QueryManager.SELECT_ALL_TORNEO_MESE_STM.setString(2,anno);
@@ -589,6 +699,7 @@ public class Torneo extends Database{
 		String datesArray = new Gson().toJson(dates);
 		jsonObject.addProperty("dates", datesArray);
 		
+		conn.close();
 		return new Gson().toJson(jsonObject);
 		
 	}
@@ -626,6 +737,16 @@ public class Torneo extends Database{
 	
 	
 	private String getTorneiPerDataEsterno(String data, ArrayList<ArrayList<String>> arrayPartecipanti) throws SQLException {
+		
+		 
+		 try {
+				conn = mysqldb.getConnection();
+				qm = new QueryManager(conn);
+			} catch (SQLException e) {
+				// TODO Auto-generated catch block
+				System.out.println("ERROR WHILE CONNECTING TO DATABASE");
+				e.printStackTrace();
+			}
 
 		QueryManager.SELECT_TORNEI_NON_PARTECIPANTI_SPECIFIC_STM.setString(1, data);
 		QueryManager.SELECT_TORNEI_NON_PARTECIPANTI_SPECIFIC_STM.setBoolean(2, false);
@@ -656,6 +777,7 @@ public class Torneo extends Database{
 					single_evento.add("0");
 				}
 			}else {
+				conn.close();
 				throw new SQLException();
 			}
 			
@@ -668,7 +790,7 @@ public class Torneo extends Database{
 		
 		String nomiArray = new Gson().toJson(eventi);
 		
-		
+		conn.close();
 		return nomiArray;
 		
 	}
@@ -676,6 +798,16 @@ public class Torneo extends Database{
 	
 	private String getTorneiPerDataAll(String data, ArrayList<ArrayList<String>> arrayPartecipanti) throws SQLException {
 		
+		
+		 
+		 try {
+				conn = mysqldb.getConnection();
+				qm = new QueryManager(conn);
+			} catch (SQLException e) {
+				// TODO Auto-generated catch block
+				System.out.println("ERROR WHILE CONNECTING TO DATABASE");
+				e.printStackTrace();
+			}
 		
 		QueryManager.SELECT_TORNEI_NON_PARTECIPANTI_ALL_STM.setString(1, data);
 		
@@ -704,6 +836,8 @@ public class Torneo extends Database{
 					single_evento.add("0");
 				}
 			}else {
+				
+				conn.close();
 				throw new SQLException();
 			}
 			
@@ -715,7 +849,7 @@ public class Torneo extends Database{
 		
 		String nomiArray = new Gson().toJson(eventi);
 		
-		
+		conn.close();
 		return nomiArray;
 		
 	}
@@ -723,6 +857,16 @@ public class Torneo extends Database{
 	
 	
 	private ArrayList<ArrayList<String>> getTorneiPartecipanti(String data, String email) throws SQLException {
+		
+		 
+		 try {
+				conn = mysqldb.getConnection();
+				qm = new QueryManager(conn);
+			} catch (SQLException e) {
+				// TODO Auto-generated catch block
+				System.out.println("ERROR WHILE CONNECTING TO DATABASE");
+				e.printStackTrace();
+			}
 		
 		QueryManager.SELECT_TORNEI_PARTECIPANTI_STM.setString(1, data);
 		QueryManager.SELECT_TORNEI_PARTECIPANTI_STM.setString(2, email);
@@ -756,6 +900,7 @@ public class Torneo extends Database{
 					single_evento.add("0");
 				}
 			}else {
+				conn.close();
 				throw new SQLException();
 			}
 		
@@ -763,8 +908,9 @@ public class Torneo extends Database{
 		}
 		
 		
-		
+		conn.close();
 		return eventi;
+		
 		
 		
 	}
@@ -810,6 +956,16 @@ public class Torneo extends Database{
 	
 	public void alertPartecipanti() throws SQLException {
 		
+		 
+		 try {
+				conn = mysqldb.getConnection();
+				qm = new QueryManager(conn);
+			} catch (SQLException e) {
+				// TODO Auto-generated catch block
+				System.out.println("ERROR WHILE CONNECTING TO DATABASE");
+				e.printStackTrace();
+			}
+		
 		QueryManager.SELECT_PARTECIPANTI_STM.setString(1, this.nome_evento);
 		QueryManager.SELECT_PARTECIPANTI_STM.setString(2, this.dateTime);
 		
@@ -836,16 +992,27 @@ public class Torneo extends Database{
 				mail.sendMultiple();
 			} catch (Exception e) {
 				// TODO Auto-generated catch block
+				conn.close();
 				e.printStackTrace();
 			}
 			
 		}
 			
-		
+		conn.close();
 	}
 	
 	
 	public String getTorneiPartecipanti() throws Exception {
+		
+		 
+		 try {
+				conn = mysqldb.getConnection();
+				qm = new QueryManager(conn);
+			} catch (SQLException e) {
+				// TODO Auto-generated catch block
+				System.out.println("ERROR WHILE CONNECTING TO DATABASE");
+				e.printStackTrace();
+			}
 		
 		// get the user from session ID
 		
@@ -874,6 +1041,7 @@ public class Torneo extends Database{
 		JsonObject jsonObject = new JsonObject();
 		jsonObject.addProperty("tornei", new Gson().toJson(tornei));
 		
+		conn.close();
 		return new Gson().toJson(jsonObject);
 		
 		

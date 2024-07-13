@@ -20,7 +20,7 @@ public class Database {
 	
 	
 	private Connection conn = null;
-	BasicDataSource mysqldb = null;
+	public BasicDataSource mysqldb = null;
 	
 	
 	

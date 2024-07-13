@@ -26,33 +26,77 @@ public class ResetPassDatabase extends Database {
 	
 	
 	public void insertPassKey() throws SQLException {
+		
+		 
+		 try {
+				conn = mysqldb.getConnection();
+				qm = new QueryManager(conn);
+			} catch (SQLException e) {
+				// TODO Auto-generated catch block
+				System.out.println("ERROR WHILE CONNECTING TO DATABASE");
+				e.printStackTrace();
+			}
+		
 		String now = DbRegisterLogin.dateTime();
 		
+		Argon2 argon2 = Argon2Factory.create();
+		String hashPass = argon2.hash(10, 63312, 1, passkey);
 		
 		QueryManager.INSERT_TEMP_PASS_STM.setString(1,associated_email);
-		QueryManager.INSERT_TEMP_PASS_STM.setString(2,passkey);
+		QueryManager.INSERT_TEMP_PASS_STM.setString(2,hashPass);
 		QueryManager.INSERT_TEMP_PASS_STM.setString(3,now);
 		
 		QueryManager.INSERT_TEMP_PASS_STM.executeUpdate();
+		
+		conn.close();
 	}
 	
 	
 	public String getAssEmail() throws SQLException {
 		
-		QueryManager.SELECT_TEMP_PASS_STM.setString(1, passkey);
+		 
+		 try {
+				conn = mysqldb.getConnection();
+				qm = new QueryManager(conn);
+			} catch (SQLException e) {
+				// TODO Auto-generated catch block
+				System.out.println("ERROR WHILE CONNECTING TO DATABASE");
+				e.printStackTrace();
+			}
+		
+		Argon2 argon2 = Argon2Factory.create();
+		
+		
 		ResultSet rs = QueryManager.SELECT_TEMP_PASS_STM.executeQuery();
 		
-		if(rs.next()) {
-			return rs.getString("email");
-		}else {
-			throw new SQLException();
+		while(rs.next()) {
+			if(argon2.verify(rs.getString("passkey"), passkey)) {
+				
+				return rs.getString("email");
+			}
 		}
+		
+		conn.close();
+		throw new SQLException();
+		
 		
 
 	}
 	
 	
 	public void resetPassword(String newPass) throws SQLException {
+		
+		 
+		 try {
+				conn = mysqldb.getConnection();
+				qm = new QueryManager(conn);
+			} catch (SQLException e) {
+				// TODO Auto-generated catch block
+				System.out.println("ERROR WHILE CONNECTING TO DATABASE");
+				e.printStackTrace();
+			}
+		 
+		 
 		Argon2 argon2 = Argon2Factory.create();
 		String hashPass = argon2.hash(10, 63312, 1, newPass); 
 		
@@ -60,13 +104,27 @@ public class ResetPassDatabase extends Database {
 		QueryManager.UPDATE_PASS_STM.setString(2, associated_email);
 		
 		QueryManager.UPDATE_PASS_STM.executeUpdate();
+		
+		conn.close();
 	}
 	
 	
 	public void removeAllResetRequests() throws SQLException {
 		
+		 
+		 try {
+				conn = mysqldb.getConnection();
+				qm = new QueryManager(conn);
+			} catch (SQLException e) {
+				// TODO Auto-generated catch block
+				System.out.println("ERROR WHILE CONNECTING TO DATABASE");
+				e.printStackTrace();
+			}
+		
 		QueryManager.DELETE_RESET_PASS_REQUEST_STM.setString(1, associated_email);
 		QueryManager.DELETE_RESET_PASS_REQUEST_STM.executeUpdate();
+		
+		conn.close();
 	}
 
 	public String getAssociated_email() {
